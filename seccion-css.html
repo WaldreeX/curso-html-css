@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca - HTML y CSS v2</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuente Inter de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white overflow-x-hidden">
+
+    <!-- Fondo decorativo con gradientes sutiles -->
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 -right-40 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Barra de navegación superior de 80px -->
+    <header class="w-full h-[80px] border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" onclick="event.preventDefault()" class="flex items-center gap-3 shrink-0">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <span class="font-bold text-lg tracking-tight text-white">Wal<span class="text-indigo-400">DreeX</span></span>
+            </a>
+
+            <!-- Botón de menú (despliega panel al 78% derecho) -->
+            <button id="btn-menu-movil" onclick="abrirMenuLateral()" aria-label="Abrir menú" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 border border-slate-800 transition-colors">
+                <span class="text-sm font-medium hidden sm:inline">Menú</span>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Fondo difuminado (Backdrop) al abrir el menú lateral -->
+    <div id="menu-backdrop" 
+         onclick="cerrarMenuLateral()" 
+         class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-40 opacity-0 pointer-events-none transition-opacity duration-300">
+    </div>
+
+    <!-- Menú lateral desplegable al 78% del lado derecho -->
+    <aside id="menu-lateral" 
+           aria-label="Menú lateral" 
+           class="fixed top-0 right-0 h-full w-[78%] bg-slate-900/95 border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between p-6 shadow-2xl">
+        <div>
+            <!-- Cabecera del panel lateral -->
+            <div class="flex items-center justify-between pb-6 mb-6 border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <span class="font-bold text-base tracking-tight text-white">Wal<span class="text-indigo-400">DreeX</span></span>
+                </div>
+                <button onclick="cerrarMenuLateral()" aria-label="Cerrar menú" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Lista de enlaces solicitados -->
+            <nav>
+                <ul class="flex flex-col gap-2 text-base font-medium text-slate-300">
+                    <li><a href="index.html" onclick="cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl hover:bg-slate-800/70 hover:text-white transition-colors">Inicio</a></li>
+                    <li><a href="#productos" onclick="event.preventDefault(); cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl hover:bg-slate-800/70 hover:text-white transition-colors">Productos</a></li>
+                    <li><a href="#nosotros" onclick="event.preventDefault(); cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl hover:bg-slate-800/70 hover:text-white transition-colors">Nosotros</a></li>
+                    <li><a href="#ayuda" onclick="event.preventDefault(); cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl hover:bg-slate-800/70 hover:text-white transition-colors">Ayuda</a></li>
+                    <li><a href="#contacto" onclick="event.preventDefault(); cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl hover:bg-slate-800/70 hover:text-white transition-colors">Contacto</a></li>
+                    <li class="pt-2 mt-2 border-t border-slate-800/80">
+                        <a href="seccion-html.html" onclick="filtrarCategoria('HTML5'); cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl text-orange-400 hover:bg-orange-500/10 transition-colors">Temas HTML</a>
+                    </li>
+                    <li>
+                        <a href="#temas-css" onclick="event.preventDefault(); filtrarCategoria('CSS3'); cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl text-sky-400 hover:bg-sky-500/10 transition-colors">Temas CSS</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800 text-xs text-slate-500">
+            Academia Web &bull; Videoteca
+        </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        
+        <!-- Encabezado y Buscador -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs sm:text-sm font-medium mb-4">
+                    <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+                    SECCION CSS3
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 leading-tight">
+                    Biblioteca de <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-pink-400 to-sky-400">Video Tutoriales</span>
+                </h1>
+                <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
+                    Explora nuestras lecciones en video de HTML y CSS. Filtra por tecnología o busca un tema específico para comenzar a practicar.
+                </p>
+            </div>
+
+            <!-- Barra de búsqueda -->
+            <div class="w-full md:w-72 relative">
+                <input type="text" 
+                       id="buscador-videos" 
+                       oninput="renderizarVideos()"
+                       placeholder="Buscar lección..." 
+                       class="w-full bg-slate-900/90 border border-slate-800 focus:border-indigo-500 rounded-2xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all">
+                <svg class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Filtros por Categoría y Contador -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-6 mb-8 border-b border-slate-800/80">
+            <div class="flex flex-wrap gap-2.5" id="filtros-contenedor">
+                <button onclick="filtrarCategoria('Todos')" data-cat="Todos" class="btn-filtro px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 transition-all">
+                    Todos
+                </button>
+                <button onclick="filtrarCategoria('HTML5')" data-cat="HTML5" class="btn-filtro px-4 py-2 rounded-xl text-sm font-semibold bg-slate-900 text-slate-300 border border-slate-800 hover:border-orange-500/50 hover:text-orange-400 transition-all">
+                    HTML5
+                </button>
+                <button onclick="filtrarCategoria('CSS3')" data-cat="CSS3" class="btn-filtro px-4 py-2 rounded-xl text-sm font-semibold bg-slate-900 text-slate-300 border border-slate-800 hover:border-sky-500/50 hover:text-sky-400 transition-all">
+                    CSS3
+                </button>
+            </div>
+
+            <span id="contador-videos" class="text-xs sm:text-sm text-slate-400 font-medium">
+                Mostrando videos
+            </span>
+        </div>
+
+        <!-- Cuadrícula de Videos -->
+        <div id="grid-videos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Las tarjetas se generan dinámicamente con JavaScript -->
+        </div>
+
+        <!-- Estado vacío cuando no hay coincidencias -->
+        <div id="estado-vacio" class="hidden text-center py-16 bg-slate-900/50 border border-slate-800/80 rounded-3xl">
+            <div class="w-14 h-14 rounded-2xl bg-slate-800 text-slate-400 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-1">No se encontraron videos</h3>
+            <p class="text-sm text-slate-400">Intenta con otro término de búsqueda o cambia el filtro de categoría.</p>
+        </div>
+
+    </main>
+
+    <!-- Modal Reproductor de Video con Diseño Premium -->
+    <div id="modal-reproductor" 
+         onclick="if(event.target === this) cerrarReproductor()"
+         class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md transition-opacity">
+        <div id="modal-caja" class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-4xl overflow-hidden shadow-2xl transform transition-all">
+            
+            <!-- Cabecera del modal -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90">
+                <div class="flex items-center gap-3 min-w-0">
+                    <span id="modal-badge" class="px-2.5 py-1 rounded-full text-xs font-semibold shrink-0">HTML5</span>
+                    <span id="modal-leccion" class="text-xs font-medium text-slate-400 hidden sm:inline shrink-0">Lección 01</span>
+                    <span class="text-slate-700 hidden sm:inline">&bull;</span>
+                    <h3 id="modal-titulo" class="font-bold text-white text-sm sm:text-base truncate">Título del video</h3>
+                </div>
+                <button onclick="cerrarReproductor()" aria-label="Cerrar reproductor" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors shrink-0 ml-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Área de reproducción real con marco cinematográfico -->
+            <div class="relative aspect-video bg-slate-950 flex items-center justify-center overflow-hidden group">
+                <!-- Resplandor ambiental detrás del video -->
+                <div id="modal-glow" class="absolute inset-0 opacity-20 pointer-events-none transition-colors"></div>
+
+                <!-- Etiqueta HTML5 <video> real -->
+                <video id="reproductor-real" 
+                       controls 
+                       playsinline 
+                       preload="metadata"
+                       class="relative z-10 w-full h-full object-contain bg-black">
+                    Tu navegador no soporta la reproducción de video HTML5.
+                </video>
+                
+                <!-- Aviso visual elegante si la ruta del .mp4 no se encuentra -->
+                <div id="error-video" class="hidden absolute inset-0 z-20 bg-slate-950/95 flex flex-col items-center justify-center p-6 text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-red-500/15 border border-red-500/30 text-red-400 flex items-center justify-center mb-4 shadow-lg shadow-red-500/10">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-white font-bold text-lg mb-1">No se encontró el archivo de video</h4>
+                    <p id="ruta-error" class="text-sm text-slate-300 max-w-md mb-2"></p>
+                    <p class="text-xs text-slate-500">Verifica que el archivo esté dentro de tu carpeta <code class="text-indigo-400">videos/</code> y abre el proyecto con Live Server.</p>
+                </div>
+            </div>
+
+            <!-- Detalles debajo del reproductor -->
+            <div class="p-6 bg-slate-900 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-slate-800/80">
+                <div>
+                    <div class="flex flex-wrap items-center gap-3 text-xs text-slate-400 mb-2">
+                        <span id="modal-duracion" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 font-medium">
+                            <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            --:--
+                        </span>
+                        <span id="modal-nivel" class="px-2.5 py-1 rounded-lg bg-slate-800/70 text-slate-300">Nivel Principiante</span>
+                    </div>
+                    <p id="modal-descripcion" class="text-sm text-slate-300 leading-relaxed"></p>
+                </div>
+                <button onclick="cerrarReproductor()" class="shrink-0 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-sm font-semibold transition-colors">
+                    Cerrar clase
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie de página -->
+    <footer class="w-full border-t border-slate-800/60 py-6 text-center text-slate-500 text-xs sm:text-sm">
+        <p>Plataforma de Aprendizaje Web &bull; Biblioteca de Videos HTML y CSS</p>
+    </footer>
+
+    <!-- Lógica de la Biblioteca de Videos -->
+    <script>
+        // =========================================================================
+        // CATÁLOGO DE VIDEOS (.MP4)
+        // Cambia la propiedad "url" por la ruta exacta de cada video en tu carpeta
+        // =========================================================================
+        const videosData = [
+            {
+                id: 1,
+                titulo: "Estructura de una etiqueta",
+                categoria: "HTML5",
+                color: "orange",
+                url: "videos-html/05-estructura de una etiqueta.mp4", // <-- CAMBIA ESTO POR LA RUTA DE TU VIDEO
+                duracion: "--:--",
+                nivel: "Principiante",
+                leccion: "Lección 01",
+                descripcion: "Conoce la anatomía de un documento HTML5 moderno, etiquetas de encabezado, párrafos y jerarquía de contenido."
+            },
+            {
+                id: 2,
+                titulo: "HTML Semántico y Accesibilidad Web",
+                categoria: "HTML5",
+                color: "orange",
+                url: "videos/video2.mp4",
+                duracion: "--:--",
+                nivel: "Principiante",
+                leccion: "Lección 02",
+                descripcion: "Aprende a utilizar header, nav, main, section, article y footer para mejorar el SEO y la accesibilidad."
+            },
+            {
+                id: 3,
+                titulo: "Formularios Modernos y Validación Nativa",
+                categoria: "HTML5",
+                color: "orange",
+                url: "videos/video3.mp4",
+                duracion: "--:--",
+                nivel: "Intermedio",
+                leccion: "Lección 03",
+                descripcion: "Construye formularios interactivos usando inputs especializados, labels accesibles y validaciones sin JavaScript."
+            },
+            {
+                id: 4,
+                titulo: "Introduccion CSS",
+                categoria: "CSS3",
+                color: "sky",
+                url: "videos-css/12-Intro-CSS.mp4",
+                duracion: "--:--",
+                nivel: "Principiante",
+                leccion: "Lección 01",
+                descripcion: "Domina margin, padding, border y box-sizing para controlar con precisión el espacio de cada elemento en pantalla."
+            },
+            {
+                id: 5,
+                titulo: "Flexbox: Alineación Flexible en una Dimensión",
+                categoria: "CSS3",
+                color: "sky",
+                url: "videos/video5.mp4",
+                duracion: "--:--",
+                nivel: "Intermedio",
+                leccion: "Lección 02",
+                descripcion: "Crea barras de navegación, tarjetas alineadas y centrados perfectos entendiendo el eje principal y transversal."
+            },
+            {
+                id: 6,
+                titulo: "CSS Grid y Diseño Responsivo Adaptable",
+                categoria: "CSS3",
+                color: "sky",
+                url: "videos/video6.mp4",
+                duracion: "--:--",
+                nivel: "Intermedio",
+                leccion: "Lección 03",
+                descripcion: "Diseña cuadrículas profesionales de dos dimensiones que se adaptan automáticamente a móviles, tablets y escritorio."
+            }
+        ];
+
+        let categoriaActual = 'Todos';
+
+        /**
+         * Convierte segundos a formato MM:SS (ej. 12:45).
+         */
+        function formatearTiempo(segundos) {
+            if (!segundos || isNaN(segundos) || !isFinite(segundos)) return '--:--';
+            const min = Math.floor(segundos / 60);
+            const seg = Math.floor(segundos % 60);
+            return `${String(min).padStart(2, '0')}:${String(seg).padStart(2, '0')}`;
+        }
+
+        /**
+         * Lee automáticamente los metadatos de cada archivo .mp4 para detectar su duración real.
+         */
+        function detectarDuraciones() {
+            videosData.forEach(video => {
+                const videoTemp = document.createElement('video');
+                videoTemp.preload = 'metadata';
+                videoTemp.src = video.url;
+
+                videoTemp.onloadedmetadata = () => {
+                    video.duracion = formatearTiempo(videoTemp.duration);
+                    const badge = document.getElementById(`duracion-video-${video.id}`);
+                    if (badge) {
+                        badge.textContent = video.duracion;
+                    }
+                };
+            });
+        }
+
+        /**
+         * Cambia la categoría activa y actualiza el estilo de los botones de filtro.
+         */
+        function filtrarCategoria(categoria) {
+            categoriaActual = categoria;
+            const botones = document.querySelectorAll('.btn-filtro');
+
+            botones.forEach(btn => {
+                const cat = btn.getAttribute('data-cat');
+                if (cat === categoria) {
+                    if (cat === 'HTML5') {
+                        btn.className = 'btn-filtro px-4 py-2 rounded-xl text-sm font-semibold bg-orange-500 text-white shadow-lg shadow-orange-500/20 transition-all';
+                    } else if (cat === 'CSS3') {
+                        btn.className = 'btn-filtro px-4 py-2 rounded-xl text-sm font-semibold bg-sky-500 text-white shadow-lg shadow-sky-500/20 transition-all';
+                    } else {
+                        btn.className = 'btn-filtro px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 text-white shadow-lg shadow-indigo-500/20 transition-all';
+                    }
+                } else {
+                    btn.className = 'btn-filtro px-4 py-2 rounded-xl text-sm font-semibold bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 hover:text-white transition-all';
+                }
+            });
+
+            renderizarVideos();
+        }
+
+        /**
+         * Renderiza las tarjetas de video con toda la estética original.
+         */
+        function renderizarVideos() {
+            const grid = document.getElementById('grid-videos');
+            const estadoVacio = document.getElementById('estado-vacio');
+            const contador = document.getElementById('contador-videos');
+            const textoBusqueda = document.getElementById('buscador-videos').value.toLowerCase().trim();
+
+            const filtrados = videosData.filter(video => {
+                const coincideCategoria = categoriaActual === 'Todos' || video.categoria === categoriaActual;
+                const coincideTexto = video.titulo.toLowerCase().includes(textoBusqueda) || 
+                                      video.descripcion.toLowerCase().includes(textoBusqueda);
+                return coincideCategoria && coincideTexto;
+            });
+
+            contador.textContent = `Mostrando ${filtrados.length} ${filtrados.length === 1 ? 'video' : 'videos'}`;
+
+            if (filtrados.length === 0) {
+                grid.innerHTML = '';
+                estadoVacio.classList.remove('hidden');
+                return;
+            }
+
+            estadoVacio.classList.add('hidden');
+
+            grid.innerHTML = filtrados.map(video => {
+                const esHTML = video.color === 'orange';
+                const bordeHover = esHTML ? 'hover:border-orange-500/60 hover:shadow-orange-500/10' : 'hover:border-sky-500/60 hover:shadow-sky-500/10';
+                const gradienteThumb = esHTML ? 'from-orange-500/20 via-slate-900 to-slate-950' : 'from-sky-500/20 via-slate-900 to-slate-950';
+                const badgeClase = esHTML ? 'bg-orange-500/15 text-orange-400 border-orange-500/30' : 'bg-sky-500/15 text-sky-400 border-sky-500/30';
+                const botonPlayClase = esHTML ? 'bg-orange-500 shadow-orange-500/30' : 'bg-sky-500 shadow-sky-500/30';
+                const tituloHover = esHTML ? 'group-hover:text-orange-400' : 'group-hover:text-sky-400';
+
+                return `
+                    <article onclick="abrirReproductor(${video.id})" 
+                             class="group bg-slate-900/80 hover:bg-slate-900 border border-slate-800 ${bordeHover} rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl cursor-pointer flex flex-col justify-between">
+                        <div>
+                            <!-- Miniatura del video con estética original -->
+                            <div class="relative aspect-video bg-gradient-to-br ${gradienteThumb} border-b border-slate-800/80 flex items-center justify-center overflow-hidden">
+                                <!-- Icono decorativo de fondo -->
+                                <div class="absolute opacity-15 group-hover:scale-110 transition-transform duration-500 ${esHTML ? 'text-orange-400' : 'text-sky-400'}">
+                                    ${esHTML 
+                                        ? '<svg class="w-24 h-24" viewBox="0 0 24 24" fill="currentColor"><path d="M4.136 3.012h15.729l-1.431 16.15-6.451 1.826-6.414-1.826-1.433-16.15zm5.266 7.302l-.173-2.035 7.533.002.173-1.963-9.87-.002.522 5.998h6.835l-.243 2.566-2.179.602-2.214-.605-.141-1.58H7.691l.247 3.123L12 17.506l4.028-1.08.558-6.111H9.402v-.001z"/></svg>'
+                                        : '<svg class="w-24 h-24" viewBox="0 0 24 24" fill="currentColor"><path d="M4.192 3.143h15.615l-1.42 16.034-6.404 1.812-6.369-1.813L4.192 3.143zM16.9 6.424l-9.8-.002.158 1.949 7.529.002-.189 2.02H9.66l.179 1.913h4.597l-.272 2.62-2.164.598-2.197-.603-.141-1.569H7.69l.247 3.123L12 17.506l4.028-1.08.872-10.002z"/></svg>'
+                                    }
+                                </div>
+
+                                <!-- Etiqueta superior izquierda -->
+                                <span class="absolute top-3.5 left-3.5 px-2.5 py-1 rounded-full text-xs font-semibold border backdrop-blur-md ${badgeClase}">
+                                    ${video.categoria}
+                                </span>
+
+                                <!-- Duración inferior derecha detectada automáticamente -->
+                                <span id="duracion-video-${video.id}" class="absolute bottom-3.5 right-3.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-950/85 text-slate-200 border border-slate-800/80">
+                                    ${video.duracion}
+                                </span>
+
+                                <!-- Botón Play central -->
+                                <div class="relative z-10 w-12 h-12 rounded-full ${botonPlayClase} text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                    <svg class="w-5 h-5 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- Información de la lección -->
+                            <div class="p-6">
+                                <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+                                    <span class="font-semibold text-slate-300">${video.leccion}</span>
+                                    <span>${video.nivel}</span>
+                                </div>
+                                <h2 class="text-lg font-bold text-white mb-2 leading-snug ${tituloHover} transition-colors">
+                                    ${video.titulo}
+                                </h2>
+                                <p class="text-slate-400 text-sm leading-relaxed line-clamp-2">
+                                    ${video.descripcion}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Pie de tarjeta -->
+                        <div class="px-6 pb-5 pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs font-semibold ${esHTML ? 'text-orange-400' : 'text-sky-400'}">
+                            <span>Ver clase ahora</span>
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        /**
+         * Abre el modal reproductor con estilo acorde al tema del video (HTML o CSS) y carga el .mp4 real.
+         */
+        function abrirReproductor(id) {
+            const video = videosData.find(v => v.id === id);
+            if (!video) return;
+
+            const modal = document.getElementById('modal-reproductor');
+            const caja = document.getElementById('modal-caja');
+            const badge = document.getElementById('modal-badge');
+            const glow = document.getElementById('modal-glow');
+            const player = document.getElementById('reproductor-real');
+            const errorBox = document.getElementById('error-video');
+            const duracionModal = document.getElementById('modal-duracion');
+
+            document.getElementById('modal-titulo').textContent = video.titulo;
+            document.getElementById('modal-leccion').textContent = video.leccion;
+            document.getElementById('modal-nivel').textContent = `Nivel ${video.nivel}`;
+            document.getElementById('modal-descripcion').textContent = video.descripcion;
+
+            badge.textContent = video.categoria;
+            if (video.color === 'orange') {
+                caja.className = 'bg-slate-900 border border-orange-500/40 rounded-3xl w-full max-w-4xl overflow-hidden shadow-2xl shadow-orange-500/10 transform transition-all';
+                badge.className = 'px-2.5 py-1 rounded-full text-xs font-semibold bg-orange-500/15 text-orange-400 border border-orange-500/30 shrink-0';
+                glow.className = 'absolute inset-0 bg-gradient-to-tr from-orange-500/20 via-transparent to-transparent pointer-events-none';
+            } else {
+                caja.className = 'bg-slate-900 border border-sky-500/40 rounded-3xl w-full max-w-4xl overflow-hidden shadow-2xl shadow-sky-500/10 transform transition-all';
+                badge.className = 'px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-500/15 text-sky-400 border border-sky-500/30 shrink-0';
+                glow.className = 'absolute inset-0 bg-gradient-to-tr from-sky-500/20 via-transparent to-transparent pointer-events-none';
+            }
+
+            // Actualizar duración en el modal
+            duracionModal.innerHTML = `
+                <svg class="w-3.5 h-3.5 ${video.color === 'orange' ? 'text-orange-400' : 'text-sky-400'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                ${video.duracion}
+            `;
+
+            // Cargar archivo .mp4 real
+            errorBox.classList.add('hidden');
+            player.classList.remove('hidden');
+            player.src = video.url;
+
+            player.onloadedmetadata = () => {
+                const durReal = formatearTiempo(player.duration);
+                video.duracion = durReal;
+                duracionModal.innerHTML = `
+                    <svg class="w-3.5 h-3.5 ${video.color === 'orange' ? 'text-orange-400' : 'text-sky-400'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    ${durReal}
+                `;
+            };
+
+            player.onerror = () => {
+                player.classList.add('hidden');
+                errorBox.classList.remove('hidden');
+                document.getElementById('ruta-error').textContent = `Ruta configurada: "${video.url}"`;
+            };
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            player.play().catch(() => {});
+        }
+
+        /**
+         * Cierra el modal reproductor y detiene la reproducción del video.
+         */
+        function cerrarReproductor() {
+            const modal = document.getElementById('modal-reproductor');
+            const player = document.getElementById('reproductor-real');
+            player.pause();
+            player.removeAttribute('src');
+            player.load();
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        /**
+         * Abre el menú lateral ocupando el 78% derecho y difumina el fondo.
+         */
+        function abrirMenuLateral() {
+            const menuLateral = document.getElementById('menu-lateral');
+            const backdrop = document.getElementById('menu-backdrop');
+            
+            menuLateral.classList.remove('translate-x-full');
+            backdrop.classList.remove('opacity-0', 'pointer-events-none');
+            backdrop.classList.add('opacity-100', 'pointer-events-auto');
+        }
+
+        /**
+         * Cierra el menú lateral y quita el difuminado del fondo.
+         */
+        function cerrarMenuLateral() {
+            const menuLateral = document.getElementById('menu-lateral');
+            const backdrop = document.getElementById('menu-backdrop');
+            
+            menuLateral.classList.add('translate-x-full');
+            backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+            backdrop.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        // Cerrar modal o menú con la tecla Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                cerrarReproductor();
+                cerrarMenuLateral();
+            }
+        });
+
+        // Inicializar cuadrícula y detectar duraciones reales al cargar
+        window.addEventListener('DOMContentLoaded', () => {
+            renderizarVideos();
+            detectarDuraciones();
+        });
+    </script>
+</body>
+</html>

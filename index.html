@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutoriales HTML y CSS</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuente Inter de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white overflow-x-hidden">
+
+    <!-- Fondo decorativo con gradientes sutiles -->
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 -right-40 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Barra de navegación superior -->
+    <header class="w-full h-[80px] border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" onclick="event.preventDefault()" class="flex items-center gap-3 shrink-0">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <span class="font-bold text-lg tracking-tight text-white">Wal<span class="text-indigo-400">DreeX</span></span>
+            </a>
+
+            <!-- Botón de menú (despliega panel al 78% derecho) -->
+            <button id="btn-menu-movil" onclick="abrirMenuLateral()" aria-label="Abrir menú" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 border border-slate-800 transition-colors">
+                <span class="text-sm font-medium hidden sm:inline">Menú</span>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Fondo difuminado (Backdrop) al abrir el menú lateral -->
+    <div id="menu-backdrop" 
+         onclick="cerrarMenuLateral()" 
+         class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-40 opacity-0 pointer-events-none transition-opacity duration-300">
+    </div>
+
+    <!-- Menú lateral desplegable al 78% del lado derecho -->
+    <aside id="menu-lateral" 
+           aria-label="Menú lateral" 
+           class="fixed top-0 right-0 h-full w-[78%] bg-slate-900/95 border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between p-6 shadow-2xl">
+        <div>
+            <!-- Cabecera del panel lateral -->
+            <div class="flex items-center justify-between pb-6 mb-6 border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <span class="font-bold text-base tracking-tight text-white">Wal<span class="text-indigo-400">DreeX</span></span>
+                </div>
+                <button onclick="cerrarMenuLateral()" aria-label="Cerrar menú" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Lista de enlaces solicitados -->
+            <nav>
+                <ul class="flex flex-col gap-2 text-base font-medium text-slate-300">
+                    <li><a href="#inicio" onclick="event.preventDefault(); cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl hover:bg-slate-800/70 hover:text-white transition-colors">Inicio</a></li>
+                    <li><a href="#productos" onclick="event.preventDefault(); cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl hover:bg-slate-800/70 hover:text-white transition-colors">Productos</a></li>
+                    <li><a href="#nosotros" onclick="event.preventDefault(); cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl hover:bg-slate-800/70 hover:text-white transition-colors">Nosotros</a></li>
+                    <li><a href="#ayuda" onclick="event.preventDefault(); cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl hover:bg-slate-800/70 hover:text-white transition-colors">Ayuda</a></li>
+                    <li><a href="#contacto" onclick="event.preventDefault(); cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl hover:bg-slate-800/70 hover:text-white transition-colors">Contacto</a></li>
+                    <li class="pt-2 mt-2 border-t border-slate-800/80">
+                        <a href="seccion-html.html" onclick="cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl text-orange-400 hover:bg-orange-500/10 transition-colors">Temas HTML</a>
+                    </li>
+                    <li>
+                        <a href="seccion-css.html" onclick="cerrarMenuLateral()" class="block px-3 py-2.5 rounded-xl text-sky-400 hover:bg-sky-500/10 transition-colors">Temas CSS</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800 text-xs text-slate-500">
+            Academia Web &bull; Menú
+        </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="flex-grow flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+        
+        <!-- Encabezado de la sección -->
+        <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs sm:text-sm font-medium mb-6">
+                <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+                WALDO RAMOS
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+                Domina los pilares del <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-pink-400 to-sky-400">Desarrollo Web</span>
+            </h1>
+            <p class="text-slate-400 text-base sm:text-lg leading-relaxed">
+                Selecciona uno de nuestros tutoriales para iniciar la visualización en video clips disponibles para comenzar a construir sitios web modernos desde cero.
+            </p>
+        </div>
+
+        <!-- Contenedor de los 2 Carteles / Tarjetas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 w-full max-w-4xl">
+
+            <!-- Cartel 1: Tutorial HTML -->
+            <a href="seccion-html.html" 
+               onclick="manejarSeleccion(event, 'HTML5', 'orange')"
+               class="group relative flex flex-col justify-between bg-slate-900/80 hover:bg-slate-900 border border-slate-800 hover:border-orange-500/60 rounded-3xl p-7 sm:p-9 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-orange-500/10 cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-500">
+                
+                <div>
+                    <!-- Cabecera del cartel: Icono y etiqueta -->
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-orange-500/15 border border-orange-500/30 flex items-center justify-center text-orange-400 group-hover:scale-110 group-hover:bg-orange-500 group-hover:text-white transition-all duration-300">
+                            <!-- Icono SVG estilo HTML5 -->
+                            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M4.136 3.012h15.729l-1.431 16.15-6.451 1.826-6.414-1.826-1.433-16.15zm5.266 7.302l-.173-2.035 7.533.002.173-1.963-9.87-.002.522 5.998h6.835l-.243 2.566-2.179.602-2.214-.605-.141-1.58H7.691l.247 3.123L12 17.506l4.028-1.08.558-6.111H9.402v-.001z"/>
+                            </svg>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                            Nivel Principiante
+                        </span>
+                    </div>
+
+                    <!-- Título y descripción -->
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3 group-hover:text-orange-400 transition-colors">
+                        Tutorial de HTML
+                    </h2>
+                    <p class="text-slate-400 text-sm sm:text-base leading-relaxed mb-6">
+                        Aprende a crear la estructura y el esqueleto de cualquier página web utilizando etiquetas semánticas, formularios, enlaces y contenido multimedia.
+                    </p>
+                </div>
+
+                <!-- Pie del cartel: Temas y botón de acción -->
+                <div>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300">Etiquetas</span>
+                        <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300">Semántica</span>
+                        <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300">Formularios</span>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-4 border-t border-slate-800/80 text-orange-400 font-semibold text-sm sm:text-base">
+                        <span>Comenzar a VER tutoriales HTML</span>
+                        <span class="w-8 h-8 rounded-full bg-orange-500/10 flex items-center justify-center group-hover:translate-x-1.5 group-hover:bg-orange-500 group-hover:text-white transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Cartel 2: Tutorial CSS -->
+            <a href="seccion-css.html" 
+               onclick="manejarSeleccion(event, 'CSS3', 'sky')"
+               class="group relative flex flex-col justify-between bg-slate-900/80 hover:bg-slate-900 border border-slate-800 hover:border-sky-500/60 rounded-3xl p-7 sm:p-9 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-sky-500/10 cursor-pointer focus:outline-none focus:ring-2 focus:ring-sky-500">
+                
+                <div>
+                    <!-- Cabecera del cartel: Icono y etiqueta -->
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400 group-hover:scale-110 group-hover:bg-sky-500 group-hover:text-white transition-all duration-300">
+                            <!-- Icono SVG estilo CSS3 -->
+                            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M4.192 3.143h15.615l-1.42 16.034-6.404 1.812-6.369-1.813L4.192 3.143zM16.9 6.424l-9.8-.002.158 1.949 7.529.002-.189 2.02H9.66l.179 1.913h4.597l-.272 2.62-2.164.598-2.197-.603-.141-1.569H7.69l.247 3.123L12 17.506l4.028-1.08.872-10.002z"/>
+                            </svg>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                            Diseño y Estilo
+                        </span>
+                    </div>
+
+                    <!-- Título y descripción -->
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">
+                        Tutorial de CSS
+                    </h2>
+                    <p class="text-slate-400 text-sm sm:text-base leading-relaxed mb-6">
+                        Dale vida, color y diseño responsivo a tus páginas web dominando selectores, Flexbox, CSS Grid, animaciones y estilos modernos.
+                    </p>
+                </div>
+
+                <!-- Pie del cartel: Temas y botón de acción -->
+                <div>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300">Flexbox & Grid</span>
+                        <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300">Colores</span>
+                        <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300">Responsive</span>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-4 border-t border-slate-800/80 text-sky-400 font-semibold text-sm sm:text-base">
+                        <span>Comenzar a VER tutorial CSS</span>
+                        <span class="w-8 h-8 rounded-full bg-sky-500/10 flex items-center justify-center group-hover:translate-x-1.5 group-hover:bg-sky-500 group-hover:text-white transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- Notificación flotante (Toast) al hacer clic en los carteles sin redirección -->
+    <div id="toast-notificacion" 
+         role="status" 
+         aria-live="polite"
+         class="fixed bottom-6 left-1/2 -translate-x-1/2 translate-y-24 opacity-0 pointer-events-none transition-all duration-300 z-50 w-[90%] max-w-md">
+        <div id="toast-contenido" class="bg-slate-900 border border-slate-700 text-white px-5 py-4 rounded-2xl shadow-2xl flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span id="toast-icono" class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0">
+                    <!-- Icono dinámico -->
+                </span>
+                <div>
+                    <p id="toast-titulo" class="font-semibold text-sm text-white"></p>
+                    <p id="toast-mensaje" class="text-xs text-slate-400 mt-0.5"></p>
+                </div>
+            </div>
+            <button onclick="cerrarNotificacion()" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors" aria-label="Cerrar aviso">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Pie de página -->
+    <footer class="w-full border-t border-slate-800/60 py-6 text-center text-slate-500 text-xs sm:text-sm">
+        <p>Plataforma de Aprendizaje Web Perosonalizado &bull; Selecciona un módulo para explorar</p>
+    </footer>
+
+    <!-- Lógica de interacción sin redirección -->
+    <script>
+        let temporizadorToast = null;
+
+        /**
+         * Maneja el clic en cualquiera de los dos carteles evitando la redirección
+         * y mostrando una confirmación visual elegante en pantalla.
+         */
+        function manejarSeleccion(evento, curso, color) {
+            // Evita que el enlace redirija o recargue la página
+            
+
+            const toast = document.getElementById('toast-notificacion');
+            const toastContenido = document.getElementById('toast-contenido');
+            const toastIcono = document.getElementById('toast-icono');
+            const toastTitulo = document.getElementById('toast-titulo');
+            const toastMensaje = document.getElementById('toast-mensaje');
+
+            // Configurar colores e icono según el cartel seleccionado
+            if (color === 'orange') {
+                toastContenido.className = 'bg-slate-900 border border-orange-500/50 text-white px-5 py-4 rounded-2xl shadow-2xl shadow-orange-500/10 flex items-center justify-between gap-4';
+                toastIcono.className = 'w-9 h-9 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center shrink-0';
+            } else {
+                toastContenido.className = 'bg-slate-900 border border-sky-500/50 text-white px-5 py-4 rounded-2xl shadow-2xl shadow-sky-500/10 flex items-center justify-between gap-4';
+                toastIcono.className = 'w-9 h-9 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0';
+            }
+
+            toastIcono.innerHTML = `
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            `;
+
+            toastTitulo.textContent = `Has seleccionado el tutorial de ${curso}`;
+            toastMensaje.textContent = 'Enlace preparado (sin redirección activa por el momento).';
+
+            // Mostrar la notificación
+            toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+
+            // Reiniciar el temporizador si el usuario hace clic varias veces
+            if (temporizadorToast) {
+                clearTimeout(temporizadorToast);
+            }
+
+            temporizadorToast = setTimeout(() => {
+                cerrarNotificacion();
+            }, 3500);
+        }
+
+        /**
+         * Oculta la notificación flotante.
+         */
+        function cerrarNotificacion() {
+            const toast = document.getElementById('toast-notificacion');
+            toast.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+        }
+
+        /**
+         * Abre el menú lateral ocupando el 78% izquierdo y difumina el fondo.
+         */
+        function abrirMenuLateral() {
+            const menuLateral = document.getElementById('menu-lateral');
+            const backdrop = document.getElementById('menu-backdrop');
+            
+            menuLateral.classList.remove('-translate-x-full');
+            backdrop.classList.remove('opacity-0', 'pointer-events-none');
+            backdrop.classList.add('opacity-100', 'pointer-events-auto');
+        }
+
+        /**
+         * Abre el menú lateral ocupando el 78% derecho y difumina el fondo.
+         */
+        function abrirMenuLateral() {
+            const menuLateral = document.getElementById('menu-lateral');
+            const backdrop = document.getElementById('menu-backdrop');
+            
+            menuLateral.classList.remove('translate-x-full');
+            backdrop.classList.remove('opacity-0', 'pointer-events-none');
+            backdrop.classList.add('opacity-100', 'pointer-events-auto');
+        }
+
+        /**
+         * Cierra el menú lateral y quita el difuminado del fondo.
+         */
+        function cerrarMenuLateral() {
+            const menuLateral = document.getElementById('menu-lateral');
+            const backdrop = document.getElementById('menu-backdrop');
+            
+            menuLateral.classList.add('translate-x-full');
+            backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+            backdrop.classList.add('opacity-0', 'pointer-events-none');
+        }
+    </script>
+</body>
+</html>
